@@ -46,6 +46,28 @@ static int vc4_debugfs_regset32(struct seq_file *m, void *unused)
 	return 0;
 }
 
+//Wambui
+void
+vc4_debugfs_wambui_init(struct drm_minor *minor)
+{
+	struct vc4_dev *vc4 = to_vc4_dev(minor->dev);
+
+	debugfs_create_bool("hvs_load_tracker", S_IRUGO | S_IWUSR,
+			    minor->debugfs_root, &vc4->load_tracker_enabled);
+}
+
+static int vc4_debugfs_wambui_regset32(struct seq_file *m, void *unused)
+{
+	struct drm_simple_info_entry *entry = m->private;
+	struct debugfs_regset32 *regset = entry->file.data;
+	struct drm_printer p = drm_seq_file_printer(m);
+
+	drm_print_regset32(&p, regset);
+
+	return 0;
+}
+//
+
 /*
  * Registers a debugfs file with a callback function for a vc4 component.
  *
@@ -74,6 +96,24 @@ void vc4_debugfs_add_file(struct drm_device *dev,
 
 	list_add(&entry->link, &vc4->debugfs_list);
 }
+
+//Wambui
+/*
+ * Registers a debugfs file with a callback function for a vc4 component.
+ * Various VC4 functions will register their debugfs files during the
+ * component bind process using drm_debugfs_add_file().
+ * These requests are tracked and delayed until their called on each
+ * minor during drm_dev_register().
+ */
+
+void vc4_debugfs_wambui_add_file(struct drm_device *dev,
+				 const char *name,
+				 int (*show)(struct seq_file*, void*),
+				 void *data)
+ {
+	 drm_debugfs_add_file(dev, name, show, data);
+ }
+//
 
 void vc4_debugfs_add_regset32(struct drm_device *drm,
 			      const char *name,

@@ -77,6 +77,19 @@ static int vc4_bo_stats_debugfs(struct seq_file *m, void *unused)
 	return 0;
 }
 
+//Wambui
+static int vc4_bo_stats_wambui_debugfs(struct seq_file *m, void *unused)
+{
+	struct drm_simple_info_entry *entry = m->private;
+	struct drm_device *dev = entry->dev;
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+	struct drm_printer p = drm_seq_file_printer(m);
+
+	vc4_bo_stats_print(&p, vc4);
+
+	return 0;
+}
+
 /* Takes ownership of *name and returns the appropriate slot for it in
  * the bo_labels[] array, extending it as necessary.
  *
@@ -973,6 +986,7 @@ int vc4_bo_cache_init(struct drm_device *dev)
 	mutex_init(&vc4->bo_lock);
 
 	vc4_debugfs_add_file(dev, "bo_stats", vc4_bo_stats_debugfs, NULL);
+	vc4_debugfs_wambui_add_file(dev, "bo_stats", vc4_bo_stats_wambui_debugfs, NULL);
 
 	INIT_LIST_HEAD(&vc4->bo_cache.time_list);
 

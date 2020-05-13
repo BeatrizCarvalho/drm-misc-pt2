@@ -115,6 +115,19 @@ static int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused)
 	return 0;
 }
 
+//Wambui
+static int vc4_hdmi_debugfs_wambui_regs(struct seq_file *m, void *unused)
+{
+	struct drm_info_node *node = (struct drm_info_node *)m->private;
+        struct vc4_hdmi *vc4_hdmi = node->info_ent->data;
+        struct drm_printer p = drm_seq_file_printer(m);
+
+        drm_print_regset32(&p, &vc4_hdmi->hdmi_regset);
+        drm_print_regset32(&p, &vc4_hdmi->hd_regset);
+
+        return 0;
+}
+//
 static void vc4_hdmi_reset(struct vc4_hdmi *vc4_hdmi)
 {
 	HDMI_WRITE(HDMI_M_CTL, VC4_HD_M_SW_RST);
@@ -2236,6 +2249,9 @@ static int vc4_hdmi_bind(struct device *dev, struct device *master, void *data)
 			     vc4_hdmi_debugfs_regs,
 			     vc4_hdmi);
 
+	vc4_debugfs_wambui_add_file(drm, variant->debugfs_name,
+                             vc4_hdmi_debugfs_regs,
+                             vc4_hdmi);
 	return 0;
 
 err_free_cec:

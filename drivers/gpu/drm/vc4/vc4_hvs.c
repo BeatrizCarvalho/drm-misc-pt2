@@ -94,6 +94,18 @@ static int vc4_hvs_debugfs_underrun(struct seq_file *m, void *data)
 
 	return 0;
 }
+//Wambui
+static int vc4_hvs_debugfs_wambui_underrun(struct seq_file *m, void *data)
+{
+	struct drm_simple_info_entry *entry = m->private;
+	struct drm_device *dev = entry->dev;
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+	struct drm_printer p = drm_seq_file_printer(m);
+
+	drm_printf(&p, "%d\n", atomic_read(&vc4->underrun));
+
+	return 0;
+}
 
 /* The filter kernel is composed of dwords each containing 3 9-bit
  * signed integers packed next to each other.
@@ -675,6 +687,8 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
 	vc4_debugfs_add_regset32(drm, "hvs_regs", &hvs->regset);
 	vc4_debugfs_add_file(drm, "hvs_underrun", vc4_hvs_debugfs_underrun,
 			     NULL);
+	vc4_debugfs_wambui_add_file(drm, "hvs_underrun", vc4_hvs_debugfs_wambui_underrun,
+                             NULL);
 
 	return 0;
 }
