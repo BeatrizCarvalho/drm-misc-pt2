@@ -1224,6 +1224,7 @@ static const struct drm_info_list drm_framebuffer_debugfs_list[] = {
 
 void drm_framebuffer_debugfs_init(struct drm_minor *minor)
 {
+	printk("it's Oops code Beatriz Carvalho - drm_framebuffer_debugfs_init\n");
 	drm_debugfs_create_files(drm_framebuffer_debugfs_list,
 				 ARRAY_SIZE(drm_framebuffer_debugfs_list),
 				 minor->debugfs_root, minor);
