@@ -77,6 +77,8 @@ static int drm_clients_info(struct seq_file *m, void *data)
 	struct drm_file *priv;
 	kuid_t uid;
 
+	printk("it's Oops code Beatriz Carvalho - drm_clients_info\n");
+	
 	seq_printf(m,
 		   "%20s %5s %3s master a %5s %10s\n",
 		   "command",
@@ -152,7 +154,13 @@ static int drm_debugfs_open(struct inode *inode, struct file *file)
 	return single_open(file, node->info_ent->show, node);
 }
 
-
+static const struct file_operations drm_debugfs_fops = {                                            
+        .owner = THIS_MODULE,                                                                       
+        .open = drm_debugfs_open,                                                                   
+        .read = seq_read,                                                                           
+        .llseek = seq_lseek,                                                                        
+        .release = single_release,                                                                  
+}; 
 
 //Wambui
 static int drm_debugfs_open_wambui(struct inode *inode, struct file *file)
@@ -165,14 +173,12 @@ static int drm_debugfs_open_wambui(struct inode *inode, struct file *file)
 	return single_open(file, node->show_fn, entry);
 }
 
-
-static const struct file_operations drm_debugfs_fops = {
-	.owner = THIS_MODULE,
-	.open = drm_debugfs_open,
-	.open = drm_debugfs_open_wambui,
-	.read = seq_read,
-	.llseek = seq_lseek,
-	.release = single_release,
+static const struct file_operations drm_debugfs_wambui_fops = {
+        .owner = THIS_MODULE,
+        .open = drm_debugfs_open_wambui,
+        .read = seq_read,
+        .llseek = seq_lseek,
+        .release = single_release,
 };
 
 /**
@@ -196,7 +202,7 @@ static void drm_debugfs_create_added_files(struct drm_minor *minor)
 		debugfs_create_file(entry->file.name,
 				    S_IFREG | S_IRUGO, minor->debugfs_root,
 				    entry,
-				    &drm_debugfs_fops);
+				    &drm_debugfs_wambui_fops);
 	}
 }
 
