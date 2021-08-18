@@ -133,7 +133,7 @@ static inline int drm_debugfs_remove_files(const struct drm_info_list *files,
 					   int count, struct drm_minor *minor)
 {
 	return 0;
-}
+}  
 #endif
 
 #endif /* _DRM_DEBUGFS_H_ */

@@ -189,6 +189,7 @@ static const struct file_operations drm_debugfs_wambui_fops = {
  * from dev->debugfs_list.
  */
 static void drm_debugfs_create_added_files(struct drm_minor *minor)
+//void drm_debugfs_create_added_files(struct drm_minor *minor)
 {
 	struct drm_device *dev = minor->dev;
 	struct drm_simple_info_entry *entry;
@@ -273,6 +274,7 @@ int drm_debugfs_init(struct drm_minor *minor, int minor_id,
 	if (drm_drv_uses_atomic_modeset(dev)) {
 		printk("it's Oops code Beatriz Carvalho - drm_drv_uses_atomic_modeset\n");
 		drm_atomic_debugfs_init(minor);
+		drm_atomic_debugfs_wambui_init(minor);
 	}
 
 	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
